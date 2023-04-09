@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-
+#include <QMap>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -134,12 +134,14 @@ void MainWindow::on_pb_request_clicked()
         ui->tw_tableView->show();
     }
     else{
+
+        QMap<QString, int> category = {{"Комедия", 5},{"Ужасы", 11}};
         sqlQuerymodel = new QSqlQueryModel(this);
         QString request = "SELECT title as \"Название фильма\", description as \"Описание фильма\""
                           " FROM film where film_id in (select film_id from film_category "
                           " where category_id = %1)";
         ui->tw_tableView->setModel(nullptr);
-        sqlQuerymodel->setQuery(request.arg(ui->cb_category->currentIndex() + 1), *db->getDataBase());
+        sqlQuerymodel->setQuery(request.arg((category.value(ui->cb_category->currentText()))), *db->getDataBase());
         ui->tw_tableView->setModel(sqlQuerymodel);
         ui->tw_tableView->resizeColumnsToContents();
         ui->tw_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);

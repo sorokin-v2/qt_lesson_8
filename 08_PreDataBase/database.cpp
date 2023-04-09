@@ -58,6 +58,7 @@ void DataBase::DisconnectFromDataBase(QString nameDb)
     dataBase->close();
 
 }
+
 /*!
  * \brief Метод формирует запрос к БД.
  * \param request - SQL запрос
